@@ -28,7 +28,7 @@ class LikeConnection
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    private int $id;
 
 
     /** The LikeConnection of the post
@@ -61,7 +61,7 @@ class LikeConnection
     /**
      * @return int|null
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

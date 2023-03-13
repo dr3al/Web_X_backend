@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-
-/** A post
+/** A goal
  *
  * @ORM\Entity
  */
@@ -22,41 +21,43 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
-class Posts
+class Goal
 {
-
-    /** The id of the post
+    /** The id of the goal
      *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    private int $id;
 
 
-    /** The text of the post
+
+    /** The name of the goal
+     *
+     * @ORM\Column(type="string", length=50, options={"fixed" = false})
+     */
+    private string $name;
+
+
+
+    /** The description of the goal
      *
      * @ORM\Column(type="text")
      */
-    private string $text;
+    private string $description;
 
 
-    /** The progress of the post
+    /** The user of the goal
      *
-     * @ORM\Column(type="integer")
-     */
-    private int $progress;
-
-
-    /** The goal of the post
-     *
-     * @ORM\ManyToOne(targetEntity="Goal", inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="goal")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Goal $goal = null;
+    private ?User $users = null;
+
 
     /**
-     *The date that the post was created
+     *The date that the goal was created
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
@@ -64,7 +65,7 @@ class Posts
 
 
     /**
-     *The date that the post was modified
+     *The date that the goal was modified
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
@@ -72,61 +73,68 @@ class Posts
 
 
     /**
-     * @var LikeConnection[] Available LikeConnections from this post
+     * @var Posts[] Available posts from this goal
      *
      * @ORM\OneToMany(
-     *     targetEntity="LikeConnection",
-     *     mappedBy="posts",
+     *     targetEntity="Posts",
+     *     mappedBy="goal",
      *     cascade={"persist", "remove"})
      */
-    private iterable $likes;
-
-
+    private iterable $posts;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
 
-
     /**
-     * @return int|null
+     * @return string
      */
-    public function getId(): ?int
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
-
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
     /**
      * @return string
      */
-    public function getText(): string
+    public function getDescription(): string
     {
-        return $this->text;
+        return $this->description;
     }
 
     /**
-     * @param string $text
+     * @param string $description
      */
-    public function setText(string $text): void
+    public function setDescription(string $description): void
     {
-        $this->text = $text;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getProgress(): int
-    {
-        return $this->progress;
+        $this->description = $description;
     }
 
     /**
-     * @param int|null $id
+     * @return User|null
      */
+    public function getUsers(): ?User
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param User|null $users
+     */
+    public function setUsers(?User $users): void
+    {
+        $this->users = $users;
+    }
+
 
 
 
@@ -164,37 +172,20 @@ class Posts
     }
 
     /**
-     * @param int $progress
+     * @return int|null
      */
-    public function setProgress(int $progress): void
+    public function getId(): ?int
     {
-        $this->progress = $progress;
-    }
-
-    /**
-     * @return Goal|null
-     */
-    public function getGoalId(): ?Goal
-    {
-        return $this->goal;
-    }
-
-    /**
-     * @param Goal|null $goal
-     */
-    public function setGoalId(?Goal $goal): void
-    {
-        $this->goal = $goal;
+        return $this->id;
     }
 
     /**
      * @return iterable
      */
-    public function getLikes(): iterable|ArrayCollection
+    public function getPosts(): iterable|ArrayCollection
     {
-        return $this->likes;
+        return $this->posts;
     }
-
 
 
 

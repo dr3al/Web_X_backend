@@ -30,7 +30,7 @@ class User
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    private int $id;
 
     /** The username of the user
      *
@@ -87,7 +87,7 @@ class User
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
-    private $date_modify = null;
+    private $date_modify;
 
 
 
@@ -127,7 +127,7 @@ class User
     /**
      * @return int|null
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
