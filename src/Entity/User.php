@@ -7,9 +7,13 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\User\RegistrationController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /** A user
  *
@@ -18,11 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(operations: [
     new Get(),
     new GetCollection(),
-    new Post(),
+    new Post(
+        uriTemplate: "/user/register",
+        controller: RegistrationController::class
+    ),
     new Delete(),
     new Patch()
 ])]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /** The id of the user
      *
@@ -41,7 +48,7 @@ class User
 
     /** The password of the user
      *
-     * @ORM\Column(type="string", length=40, options={"fixed" = false})
+     * @ORM\Column(type="string")
      */
     private string $password;
 
@@ -67,11 +74,11 @@ class User
     private string $last_name;
 
 
-    /** The role of the user
+    /** The roles of the user
      *
-     * @ORM\Column(type="string", length=15, options={"fixed" = false})
+     * @ORM\Column(type="array")
      */
-    private string $role;
+    private array $roles;
 
 
     /**
@@ -121,18 +128,6 @@ class User
 
     }
 
-
-
-
-    /**
-     * @return int|null
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-
     /**
      * @return string
      */
@@ -171,14 +166,6 @@ class User
     public function getLastName(): string
     {
         return $this->last_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRole(): string
-    {
-        return $this->role;
     }
 
     /**
@@ -238,11 +225,11 @@ class User
     }
 
     /**
-     * @param string $role
+     * @param array $roles
      */
-    public function setRole(string $role): void
+    public function setRoles(array $roles): void
     {
-        $this->role = $role;
+        $this->roles = $roles;
     }
 
     /**
@@ -279,9 +266,18 @@ class User
     }
 
 
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
 
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 
-
-
-
+    public function getUserIdentifier(): string
+    {
+        return $this->id;
+    }
 }
