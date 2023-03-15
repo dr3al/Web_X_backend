@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** A post
  *
@@ -95,8 +96,8 @@ class Posts
      *     mappedBy="posts",
      *     cascade={"persist", "remove"})
      */
+    private iterable $likes;
 
-    private ArrayCollection $likes;
 
 
     public function __construct()
