@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Metadata\Delete;
@@ -21,6 +24,14 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'description' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'name' => SearchFilterInterface::STRATEGY_PARTIAL
+    ]
+)]
+
 class Goal
 {
     /** The id of the goal

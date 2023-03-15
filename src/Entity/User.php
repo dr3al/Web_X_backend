@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -22,6 +25,16 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'username' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'text' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'description' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'goals' => SearchFilterInterface::STRATEGY_PARTIAL
+    ]
+)]
+
 class User
 {
     /** The id of the user
@@ -277,11 +290,6 @@ class User
     {
         return $this->likes;
     }
-
-
-
-
-
 
 
 }
