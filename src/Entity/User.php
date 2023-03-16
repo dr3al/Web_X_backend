@@ -25,15 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
-#[ApiFilter(
-    SearchFilter::class,
-    properties: [
-        'username' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'text' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'description' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'goals' => SearchFilterInterface::STRATEGY_PARTIAL
-    ]
-)]
 
 class User
 {

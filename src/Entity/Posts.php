@@ -13,7 +13,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /** A post
  *
@@ -41,7 +40,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Posts
 {
-
     /** The id of the post
      *
      * @ORM\Id
@@ -144,9 +142,6 @@ class Posts
     /**
      * @param int|null $id
      */
-
-
-
 
     /**
      * @return \DateTimeInterface|null
