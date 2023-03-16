@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
         controller: RegistrationController::class
     ),
     new Get(
-        uriTemplate: "/user/",
+        uriTemplate: "/user/iduc",
         controller: UserConnectionController::class
     ),
     new Delete(),

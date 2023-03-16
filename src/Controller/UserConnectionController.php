@@ -36,7 +36,7 @@ class UserConnectionController extends AbstractController
     {
         $userConnection = $entityManager->getRepository(UserConnection::class)->findOneBy([
             'user' => $user,
-            'followerId' => $follower
+            'follower' => $follower
         ]);
 
         if (!$userConnection) {
@@ -46,25 +46,27 @@ class UserConnectionController extends AbstractController
         return $userConnection->getId();
     }
 
-    /**
-     * Метод обрабатывает GET-запрос и возвращает id записи UserConnection, связывающей пользователя и подписчика, по их id.
-     *
-     * @param $user
-     * @param $follower
-     * @param UserConnectionController $userConnectionController
-     * @return JsonResponse
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @Route("/users/{user}/followers/{follower}/user-connection-id", name="get_user_connection_id", methods={"GET"})
-     */
-    public function getUserConnectionId($user, $follower, UserConnectionController $userConnectionController): JsonResponse
-    {
-        $userConnectionId = $userConnectionController->findUserConnectionId($user, $follower, $this->getDoctrine()->getManager());
 
-        if (!$userConnectionId) {
-            throw $this->createNotFoundException('UserConnection not found');
-        }
+//    /**
+//     * Метод обрабатывает GET-запрос и возвращает id записи UserConnection, связывающей пользователя и подписчика, по их id.
+//     *
+//     * @param $user
+//     * @param $follower
+//     * @param UserConnectionController $userConnectionController
+//     * @return JsonResponse
+//     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+//     *
+//     * @Route("/users/{user}/followers/{follower}/user-connection-id", name="get_user_connection_id", methods={"GET"})
+//     */
+//    public function getUserConnectionId($user, $follower, UserConnectionController $userConnectionController): JsonResponse
+//    {
+//        $userConnectionId = $userConnectionController->findUserConnectionId($user, $follower, $this->getDoctrine()->getManager());
+//
+//        if (!$userConnectionId) {
+//            throw $this->createNotFoundException('UserConnection not found');
+//        }
+//
+//        return new JsonResponse(['user_connection_id' => $userConnectionId]);
+//    }
 
-        return new JsonResponse(['user_connection_id' => $userConnectionId]);
-    }
 }
