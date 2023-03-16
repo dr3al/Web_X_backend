@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
+use App\Controller\UserConnectionController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +26,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Post(
         uriTemplate: "/user/register",
         controller: RegistrationController::class
+    ),
+    new Get(
+        uriTemplate: "/user/",
+        controller: UserConnectionController::class
     ),
     new Delete(),
     new Patch()
@@ -120,13 +125,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private iterable $likes;
 
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $user;
 
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="follower",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $follower;
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->goals = new ArrayCollection();
-
+        $this->user = new ArrayCollection();
+        $this->follower = new ArrayCollection();
     }
+
 
     /**
      * @return string
