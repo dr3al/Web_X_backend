@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Metadata\Delete;
@@ -9,8 +11,19 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+
+#[ApiFilter(
+    SearchFilter:: class,
+    properties:[
+        'user' => SearchFilterInterface:: STRATEGY_EXACT,
+        'text' => SearchFilterInterface:: STRATEGY_PARTIAL
+    ]
+)]
 
 /** A goal
+
  *
  * @ORM\Entity
  */
@@ -134,9 +147,6 @@ class Goal
     {
         $this->users = $users;
     }
-
-
-
 
 
     /**
