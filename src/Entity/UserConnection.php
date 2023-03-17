@@ -6,8 +6,8 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
+use App\Controller\UserConnection\UserConnectionController;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** A UserConnection
  *
@@ -15,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ApiResource(operations: [
     new Get(),
+    new Post(
+        uriTemplate: "/user/find",
+        controller: UserConnectionController::class,
+        normalizationContext: ['groups' => ['read']],
+        denormalizationContext: ['groups' => ['search']]
+    ),
     new GetCollection(),
     new Post(),
     new Delete(),
@@ -27,26 +33,27 @@ class UserConnection
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read'])]
     private int $id;
 
     /** The UserConnection of the user
      * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['search'])]
     private ?User $user;
 
     /** The UserConnection of the Follower
      * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['search'])]
     private ?User $follower;
 
     /** The date that the UserConnection was created
      * @ORM\Column(type="datetime")
      */
     private ?\DateTimeInterface $dateCreate;
-
-
 
     /**
      * @return int|null
