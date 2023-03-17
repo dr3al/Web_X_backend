@@ -1,0 +1,123 @@
+<?php //property_metadata_34b22642c1752e2aa5d41eba5eea195e
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Metadata\\ApiProperty'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\ApiProperty')),
+        clone ($p['Symfony\\Component\\PropertyInfo\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\PropertyInfo\\Type')),
+        clone $p['Symfony\\Component\\PropertyInfo\\Type'],
+        clone $p['Symfony\\Component\\PropertyInfo\\Type'],
+    ],
+    null,
+    [
+        'ApiPlatform\\Metadata\\ApiProperty' => [
+            'description' => [
+                'Available posts from this goal',
+            ],
+            'readable' => [
+                true,
+            ],
+            'writable' => [
+                false,
+            ],
+            'readableLink' => [
+                false,
+            ],
+            'writableLink' => [
+                false,
+            ],
+            'required' => [
+                false,
+            ],
+            'identifier' => [
+                null,
+            ],
+            'example' => [
+                null,
+            ],
+            'deprecationReason' => [
+                null,
+            ],
+            'fetchable' => [
+                null,
+            ],
+            'fetchEager' => [
+                null,
+            ],
+            'jsonldContext' => [
+                null,
+            ],
+            'openapiContext' => [
+                null,
+            ],
+            'jsonSchemaContext' => [
+                null,
+            ],
+            'push' => [
+                null,
+            ],
+            'security' => [
+                null,
+            ],
+            'securityPostDenormalize' => [
+                null,
+            ],
+            'types' => [
+                null,
+            ],
+            'builtinTypes' => [
+                [
+                    $o[1],
+                ],
+            ],
+            'schema' => [
+                null,
+            ],
+            'initializable' => [
+                false,
+            ],
+            'genId' => [
+                null,
+            ],
+            'extraProperties' => [
+                [],
+            ],
+        ],
+        'Symfony\\Component\\PropertyInfo\\Type' => [
+            'builtinType' => [
+                1 => 'object',
+                'int',
+                'object',
+            ],
+            'nullable' => [
+                1 => false,
+                false,
+                false,
+            ],
+            'class' => [
+                1 => 'Doctrine\\Common\\Collections\\Collection',
+                3 => 'App\\Entity\\Posts',
+            ],
+            'collection' => [
+                1 => true,
+                false,
+                false,
+            ],
+            'collectionKeyType' => [
+                1 => [
+                    $o[2],
+                ],
+                [],
+                [],
+            ],
+            'collectionValueType' => [
+                1 => [
+                    $o[3],
+                ],
+                [],
+                [],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

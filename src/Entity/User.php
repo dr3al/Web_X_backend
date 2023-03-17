@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -8,12 +10,14 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
+use App\Controller\User\ResetPasswordController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** A user
  *
@@ -23,12 +27,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Get(),
     new GetCollection(),
     new Post(
+        uriTemplate: "/user/reset",
+        controller: ResetPasswordController::class,
+        denormalizationContext: ['groups'=>['email']],
+        normalizationContext: ['groups'=>['email']]
+    ),
+    new Post(
         uriTemplate: "/user/register",
         controller: RegistrationController::class
     ),
     new Delete(),
     new Patch()
 ])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /** The id of the user
@@ -57,6 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @ORM\Column(type="string", length=40, options={"fixed" = false}, unique=true)
      */
+    #[Groups(['email'])]
     private string $email;
 
 
@@ -127,6 +139,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->goals = new ArrayCollection();
 
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+
 
     /**
      * @return string

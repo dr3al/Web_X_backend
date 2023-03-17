@@ -1,0 +1,760 @@
+<?php //resource_metadata_collection_7ef04de403d78b417ecab55a23a3d9d8
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Metadata\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\ApiResource')),
+        clone ($p['ApiPlatform\\Metadata\\Operations'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Operations')),
+        clone ($p['ApiPlatform\\Metadata\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Get')),
+        clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
+        clone ($p['ApiPlatform\\Metadata\\GetCollection'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\GetCollection')),
+        clone ($p['ApiPlatform\\Metadata\\Post'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Post')),
+        clone ($p['ApiPlatform\\Metadata\\Delete'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Delete')),
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+    ],
+    null,
+    [
+        'ApiPlatform\\Metadata\\ApiResource' => [
+            'operations' => [
+                $o[1],
+            ],
+            'uriTemplate' => [
+                null,
+            ],
+            'shortName' => [
+                'LikeConnection',
+            ],
+            'description' => [
+                'A likeconnection',
+            ],
+            'types' => [
+                null,
+            ],
+            'uriVariables' => [
+                [
+                    'id' => $o[8],
+                ],
+            ],
+            'routePrefix' => [
+                null,
+            ],
+            'defaults' => [
+                null,
+            ],
+            'requirements' => [
+                null,
+            ],
+            'options' => [
+                null,
+            ],
+            'stateless' => [
+                null,
+            ],
+            'sunset' => [
+                null,
+            ],
+            'acceptPatch' => [
+                null,
+            ],
+            'status' => [
+                null,
+            ],
+            'host' => [
+                null,
+            ],
+            'schemes' => [
+                null,
+            ],
+            'condition' => [
+                null,
+            ],
+            'controller' => [
+                null,
+            ],
+            'class' => [
+                'App\\Entity\\LikeConnection',
+            ],
+            'urlGenerationStrategy' => [
+                null,
+            ],
+            'deprecationReason' => [
+                null,
+            ],
+            'cacheHeaders' => [
+                null,
+            ],
+            'normalizationContext' => [
+                null,
+            ],
+            'denormalizationContext' => [
+                null,
+            ],
+            'collectDenormalizationErrors' => [
+                null,
+            ],
+            'hydraContext' => [
+                null,
+            ],
+            'openapiContext' => [
+                null,
+            ],
+            'openapi' => [
+                null,
+            ],
+            'validationContext' => [
+                null,
+            ],
+            'filters' => [
+                null,
+            ],
+            'elasticsearch' => [
+                null,
+            ],
+            'order' => [
+                null,
+            ],
+            'fetchPartial' => [
+                null,
+            ],
+            'forceEager' => [
+                null,
+            ],
+            'paginationClientEnabled' => [
+                null,
+            ],
+            'paginationClientItemsPerPage' => [
+                null,
+            ],
+            'paginationClientPartial' => [
+                null,
+            ],
+            'paginationViaCursor' => [
+                null,
+            ],
+            'paginationEnabled' => [
+                null,
+            ],
+            'paginationFetchJoinCollection' => [
+                null,
+            ],
+            'paginationUseOutputWalkers' => [
+                null,
+            ],
+            'paginationItemsPerPage' => [
+                null,
+            ],
+            'paginationMaximumItemsPerPage' => [
+                null,
+            ],
+            'paginationPartial' => [
+                null,
+            ],
+            'paginationType' => [
+                null,
+            ],
+            'security' => [
+                null,
+            ],
+            'securityMessage' => [
+                null,
+            ],
+            'securityPostDenormalize' => [
+                null,
+            ],
+            'securityPostDenormalizeMessage' => [
+                null,
+            ],
+            'securityPostValidation' => [
+                null,
+            ],
+            'securityPostValidationMessage' => [
+                null,
+            ],
+            'compositeIdentifier' => [
+                null,
+            ],
+            'exceptionToStatus' => [
+                null,
+            ],
+            'queryParameterValidationEnabled' => [
+                null,
+            ],
+            'graphQlOperations' => [
+                [],
+            ],
+            'stateOptions' => [
+                null,
+            ],
+            'extraProperties' => [
+                [],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operations' => [
+            'operations' => [
+                1 => [
+                    [
+                        '_api_/like_connections/{id}{._format}_get',
+                        $o[2],
+                    ],
+                    [
+                        '_api_/like_connections{._format}_get_collection',
+                        $o[4],
+                    ],
+                    [
+                        '_api_/like_connections{._format}_post',
+                        $o[5],
+                    ],
+                    [
+                        '_api_/like_connections/{id}{._format}_delete',
+                        $o[6],
+                    ],
+                ],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operation' => [
+            'shortName' => [
+                2 => 'LikeConnection',
+                4 => 'LikeConnection',
+                'LikeConnection',
+                'LikeConnection',
+            ],
+            'class' => [
+                2 => 'App\\Entity\\LikeConnection',
+                4 => 'App\\Entity\\LikeConnection',
+                'App\\Entity\\LikeConnection',
+                'App\\Entity\\LikeConnection',
+            ],
+            'paginationEnabled' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationType' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationItemsPerPage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationMaximumItemsPerPage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationPartial' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationClientEnabled' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationClientItemsPerPage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationClientPartial' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationFetchJoinCollection' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationUseOutputWalkers' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'order' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'description' => [
+                2 => 'A likeconnection',
+                4 => 'A likeconnection',
+                'A likeconnection',
+                'A likeconnection',
+            ],
+            'normalizationContext' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'denormalizationContext' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'collectDenormalizationErrors' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'security' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'securityMessage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'securityPostDenormalize' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'securityPostDenormalizeMessage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'securityPostValidation' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'securityPostValidationMessage' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'deprecationReason' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'filters' => [
+                2 => [],
+                4 => [],
+                [],
+                [],
+            ],
+            'validationContext' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'elasticsearch' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'urlGenerationStrategy' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'read' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'deserialize' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'validate' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'write' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'serialize' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'fetchPartial' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'forceEager' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'priority' => [
+                2 => 0,
+                4 => 1,
+                2,
+                3,
+            ],
+            'name' => [
+                2 => '_api_/like_connections/{id}{._format}_get',
+                4 => '_api_/like_connections{._format}_get_collection',
+                '_api_/like_connections{._format}_post',
+                '_api_/like_connections/{id}{._format}_delete',
+            ],
+            'provider' => [
+                2 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                4 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+            ],
+            'processor' => [
+                2 => 'api_platform.doctrine.orm.state.persist_processor',
+                4 => 'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.remove_processor',
+            ],
+            'stateOptions' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'extraProperties' => [
+                2 => [],
+                4 => [],
+                [],
+                [],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\HttpOperation' => [
+            'method' => [
+                2 => 'GET',
+                4 => 'GET',
+                'POST',
+                'DELETE',
+            ],
+            'uriTemplate' => [
+                2 => '/like_connections/{id}{._format}',
+                4 => '/like_connections{._format}',
+                '/like_connections{._format}',
+                '/like_connections/{id}{._format}',
+            ],
+            'types' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'inputFormats' => [
+                2 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                4 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+            ],
+            'outputFormats' => [
+                2 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                4 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+            ],
+            'uriVariables' => [
+                2 => [
+                    'id' => $o[3],
+                ],
+                5 => [],
+                [
+                    'id' => $o[7],
+                ],
+            ],
+            'routePrefix' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'routeName' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'defaults' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'requirements' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'options' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'stateless' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'sunset' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'acceptPatch' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'host' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'schemes' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'condition' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'controller' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'cacheHeaders' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'paginationViaCursor' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'hydraContext' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'openapiContext' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'openapi' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'exceptionToStatus' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+            'queryParameterValidationEnabled' => [
+                2 => null,
+                4 => null,
+                null,
+                null,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Link' => [
+            'parameterName' => [
+                3 => 'id',
+                7 => 'id',
+                'id',
+            ],
+            'fromProperty' => [
+                3 => null,
+                7 => null,
+                null,
+            ],
+            'toProperty' => [
+                3 => null,
+                7 => null,
+                null,
+            ],
+            'fromClass' => [
+                3 => 'App\\Entity\\LikeConnection',
+                7 => 'App\\Entity\\LikeConnection',
+                'App\\Entity\\LikeConnection',
+            ],
+            'toClass' => [
+                3 => null,
+                7 => null,
+                null,
+            ],
+            'identifiers' => [
+                3 => [
+                    'id',
+                ],
+                7 => [
+                    'id',
+                ],
+                [
+                    'id',
+                ],
+            ],
+            'compositeIdentifier' => [
+                3 => null,
+                7 => null,
+                null,
+            ],
+            'expandedValue' => [
+                3 => null,
+                7 => null,
+                null,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\GetCollection' => [
+            'itemUriTemplate' => [
+                4 => null,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Post' => [
+            'itemUriTemplate' => [
+                5 => null,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];
