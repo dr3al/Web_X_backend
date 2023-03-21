@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -13,9 +11,6 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
 use App\Controller\User\ResetPasswordController;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -122,12 +117,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private iterable $likes;
 
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $user;
+
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="follower",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $follower;
 
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->goals = new ArrayCollection();
-
+        $this->user = new ArrayCollection();
+        $this->follower = new ArrayCollection();
     }
 
     /**
@@ -283,6 +298,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {}
 
     public function getUserIdentifier(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
