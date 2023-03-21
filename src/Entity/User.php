@@ -9,9 +9,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
+use App\Controller\User\ResetPasswordController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** A user
  *
@@ -21,12 +23,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Get(),
     new GetCollection(),
     new Post(
+        uriTemplate: "/user/reset",
+        controller: ResetPasswordController::class,
+        denormalizationContext: ['groups'=>['email']],
+        normalizationContext: ['groups'=>['email']]
+    ),
+    new Post(
         uriTemplate: "/user/register",
         controller: RegistrationController::class
     ),
     new Delete(),
     new Patch()
 ])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /** The id of the user
@@ -53,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @ORM\Column(type="string", length=40, options={"fixed" = false}, unique=true)
      */
+    #[Groups(['email'])]
     private string $email;
 
     /** The first_name of the user
@@ -133,6 +143,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->goals = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->follower = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -277,9 +295,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function eraseCredentials()
-    {
-        //Not need
-    }
+    {}
 
     public function getUserIdentifier(): string
     {
