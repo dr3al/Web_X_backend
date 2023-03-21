@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -9,9 +10,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -45,13 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $username;
 
-
     /** The password of the user
      *
      * @ORM\Column(type="string")
      */
     private string $password;
-
 
     /** The email of the user
      *
@@ -59,13 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $email;
 
-
     /** The first_name of the user
      *
      * @ORM\Column(type="string", length=20, options={"fixed" = false})
      */
     private string $first_name;
-
 
     /** The last_name of the user
      *
@@ -73,13 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $last_name;
 
-
     /** The roles of the user
      *
      * @ORM\Column(type="array")
      */
     private array $roles;
-
 
     /**
      *The date that the user was created
@@ -88,15 +80,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $date_create;
 
-
     /**
      *The date that the user was modified
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $date_modify;
-
-
 
     /**
      * @var Goal[] Available user from this goals
@@ -108,8 +97,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private iterable $goals;
 
-
-
     /**
      * @var LikeConnection[] Available user from this likeConnections
      *
@@ -120,12 +107,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private iterable $likes;
 
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $user;
+
+    /**
+     * @var UserConnection[] Available user from this likeConnections
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="UserConnection",
+     *     mappedBy="follower",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $follower;
 
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->goals = new ArrayCollection();
-
+        $this->user = new ArrayCollection();
+        $this->follower = new ArrayCollection();
     }
 
     /**
@@ -240,7 +247,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->date_create = $date_create;
     }
 
-
     /**
      * @param \DateTimeInterface|null $date_modify
      */
@@ -265,7 +271,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->likes;
     }
 
-
     public function getRoles(): array
     {
         return $this->roles;
@@ -273,10 +278,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        //Not need
     }
 
     public function getUserIdentifier(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }

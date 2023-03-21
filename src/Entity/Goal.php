@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Metadata\Delete;
@@ -9,8 +11,19 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+
+#[ApiFilter(
+    SearchFilter:: class,
+    properties:[
+        'name' => SearchFilterInterface:: STRATEGY_PARTIAL,
+        'description' => SearchFilterInterface:: STRATEGY_PARTIAL,
+        'users' => SearchFilterInterface::STRATEGY_EXACT
+    ]
+)]
 
 /** A goal
+
  *
  * @ORM\Entity
  */
@@ -31,22 +44,17 @@ class Goal
      */
     private int $id;
 
-
-
     /** The name of the goal
      *
      * @ORM\Column(type="string", length=50, options={"fixed" = false})
      */
     private string $name;
 
-
-
     /** The description of the goal
      *
      * @ORM\Column(type="text")
      */
     private string $description;
-
 
     /** The user of the goal
      *
@@ -55,7 +63,6 @@ class Goal
      */
     private ?User $users = null;
 
-
     /**
      *The date that the goal was created
      *
@@ -63,14 +70,12 @@ class Goal
      */
     private $date_create;
 
-
     /**
      *The date that the goal was modified
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $date_modify = null;
-
 
     /**
      * @var Posts[] Available posts from this goal
@@ -135,10 +140,6 @@ class Goal
         $this->users = $users;
     }
 
-
-
-
-
     /**
      * @return \DateTimeInterface|null
      */
@@ -186,7 +187,4 @@ class Goal
     {
         return $this->posts;
     }
-
-
-
 }
