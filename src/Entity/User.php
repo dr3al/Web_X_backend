@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -56,13 +57,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $username;
 
-
     /** The password of the user
      *
      * @ORM\Column(type="string")
      */
     private string $password;
-
 
     /** The email of the user
      *
@@ -71,13 +70,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['email'])]
     private string $email;
 
-
     /** The first_name of the user
      *
      * @ORM\Column(type="string", length=20, options={"fixed" = false})
      */
     private string $first_name;
-
 
     /** The last_name of the user
      *
@@ -85,13 +82,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $last_name;
 
-
     /** The roles of the user
      *
      * @ORM\Column(type="array")
      */
     private array $roles;
-
 
     /**
      *The date that the user was created
@@ -100,15 +95,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $date_create;
 
-
     /**
      *The date that the user was modified
      *
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $date_modify;
-
-
 
     /**
      * @var Goal[] Available user from this goals
@@ -119,8 +111,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     cascade={"persist", "remove"})
      */
     private iterable $goals;
-
-
 
     /**
      * @var LikeConnection[] Available user from this likeConnections
@@ -147,8 +137,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
-
 
     /**
      * @return string
@@ -262,7 +250,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->date_create = $date_create;
     }
 
-
     /**
      * @param \DateTimeInterface|null $date_modify
      */
@@ -287,16 +274,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->likes;
     }
 
-
     public function getRoles(): array
     {
         return $this->roles;
     }
 
     public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
+    {}
 
     public function getUserIdentifier(): string
     {

@@ -7,7 +7,6 @@ use App\Services\User\GeneratePasswordService;
 use App\Services\User\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends AbstractController
@@ -26,8 +25,7 @@ class ResetPasswordController extends AbstractController
         if(!($user = $repository->findOneBy(['email'=>$email]))) {
             throw new NotFoundHttpException();
         }
-        else
-        {
+        else {
             $password = $this->generatePasswordService->gen_password(10); // получение сгенерированного пароля
             $hashedPassword = $this->userService->hashPassword($user, $password); // хэшируем пароль
             $user->setPassword($hashedPassword);
@@ -44,7 +42,5 @@ class ResetPasswordController extends AbstractController
              **/
             return $user;
         }
-
-
     }
 }
