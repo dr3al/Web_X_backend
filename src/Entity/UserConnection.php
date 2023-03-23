@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\UserConnection\UserConnectionController;
+use App\Controller\Subscriptions\SubscriberController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  */
+
+
 #[ApiResource(operations: [
     new Get(),
     new Post(
@@ -21,6 +24,12 @@ use Doctrine\ORM\Mapping as ORM;
         controller: UserConnectionController::class,
         normalizationContext: ['groups' => ['read']],
         denormalizationContext: ['groups' => ['search']]
+    ),
+    new Post(
+        uriTemplate: "/user/getSubscription",
+        controller: SubscriberController::class,
+        normalizationContext: ['groups' => ['read']],
+        denormalizationContext: ['groups' => ['find']]
     ),
     new GetCollection(),
     new Post(),
@@ -41,7 +50,7 @@ class UserConnection
      * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['search'])]
+    #[Groups(['search', 'find'])]
     private ?User $user;
 
     /** The UserConnection of the Follower
