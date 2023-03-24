@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Controller\Subscriptions\SubscriptionsController;
 use App\Controller\UserConnection\UserConnectionController;
 use App\Controller\Subscriptions\SubscriberController;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -26,10 +27,16 @@ use Doctrine\ORM\Mapping as ORM;
         denormalizationContext: ['groups' => ['search']]
     ),
     new Post(
-        uriTemplate: "/user/getSubscription",
+        uriTemplate: "/user/getSubscriber",
         controller: SubscriberController::class,
-        normalizationContext: ['groups' => ['read']],
-        denormalizationContext: ['groups' => ['find']]
+//        normalizationContext: ['groups' => ['read']],
+        denormalizationContext: ['groups' => ['getSubscriber']]
+    ),
+    new Post(
+        uriTemplate: "/user/getSubscription",
+        controller: SubscriptionsController::class,
+//        normalizationContext: ['groups' => ['read']],
+        denormalizationContext: ['groups' => ['getSubscription']]
     ),
     new GetCollection(),
     new Post(),
@@ -50,15 +57,15 @@ class UserConnection
      * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['search', 'find'])]
-    private ?User $user;
+    #[Groups(['search', 'getSubscriber'])]
+    private ?User $user = null;
 
     /** The UserConnection of the Follower
      * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['search'])]
-    private ?User $follower;
+    #[Groups(['search', 'getSubscription'])]
+    private ?User $follower = null;
 
     /** The date that the UserConnection was created
      * @ORM\Column(type="datetime")
@@ -99,7 +106,7 @@ class UserConnection
     }
 
     /**
-     * @param User|null $Follower
+     * @param User|null $follower
      */
     public function setFollower(User $follower): void
     {

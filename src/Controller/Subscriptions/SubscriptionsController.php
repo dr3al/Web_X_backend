@@ -12,32 +12,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SubscriberController extends AbstractController
+class SubscriptionsController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {}
 
     public function __invoke(mixed $data): JsonResponse
     {
-        $subscribers = $this->entityManager->getRepository(UserConnection::class)->findBy([
-            'user' => $data->getUser()->getId(),
+        $subscriptions = $this->entityManager->getRepository(UserConnection::class)->findBy([
+            'follower' => $data->getFollower()->getId(),
         ]);
 
-        if (!$subscribers) {
-            throw new NotFoundHttpException('No subscribers found for the given user');
+        if (!$subscriptions) {
+            throw new NotFoundHttpException('No Subscriptions found for the given user');
         }
 
-        $followerList = [];
+        $userList = [];
 
-        foreach ($subscribers as &$subscriber) {
-            $follower = $subscriber->getFollower()->getId();
+        foreach ($subscriptions as &$subscription) {
+            $user = $subscription->getUser()->getId();
 
-            if ($follower) {
-                $followerList[] = $follower;
+            if ($user) {
+                $userList[] = $user;
             }
         }
+      
 
-
-        return new JsonResponse($followerList);
+        return new JsonResponse($userList);
     }
 }
