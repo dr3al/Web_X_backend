@@ -26,8 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
     new Post(
         uriTemplate: "/user/reset",
         controller: ResetPasswordController::class,
-        denormalizationContext: ['groups'=>['email']],
-        normalizationContext: ['groups'=>['email']]
+        normalizationContext: ['groups'=>['email']],
+        denormalizationContext: ['groups'=>['email']]
     ),
     new Post(
         uriTemplate: "/user/register",

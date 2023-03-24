@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -8,7 +10,10 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /** A post
@@ -22,8 +27,10 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
+#[ApiFilter(OrderFilter::class, properties: ['likes.id'])]
 class Posts
 {
+
 
     /** The id of the post
      *
@@ -80,6 +87,10 @@ class Posts
      *     cascade={"persist", "remove"})
      */
     private iterable $likes;
+
+    /**
+     * @var int|null
+     */
 
 
 
@@ -194,6 +205,12 @@ class Posts
     {
         return $this->likes;
     }
+
+
+
+
+
+
 
 
 
