@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
-#[ApiFilter(OrderFilter::class, properties: ['date_create', 'likes.posts'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(OrderFilter::class, properties: ['date_create'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(SearchFilter::class, properties: ['goal.users' => 'exact'])]
 class Posts
 {
