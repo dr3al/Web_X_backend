@@ -6,8 +6,11 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Controller\LikeConnection\LikeConnectionController;
+use App\Controller\UserConnection\UserConnectionController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /** A likeconnection
@@ -16,10 +19,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ApiResource(operations: [
     new Get(),
+    new Post(
+        uriTemplate: "/like/find",
+        controller: LikeConnectionController::class,
+        normalizationContext: ['groups' => ['read']],
+        denormalizationContext: ['groups' => ['search']]
+    ),
     new GetCollection(),
     new Post(),
     new Delete(),
 ])]
+
 class LikeConnection
 {
     /** The id of the LikeConnection
@@ -28,6 +38,7 @@ class LikeConnection
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read'])]
     private int $id;
 
 
@@ -36,6 +47,7 @@ class LikeConnection
      * @ORM\ManyToOne(targetEntity="Posts", inversedBy="like_connection")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['search'])]
     private ?Posts $posts = null;
 
 
@@ -44,6 +56,7 @@ class LikeConnection
      * @ORM\ManyToOne(targetEntity="User", inversedBy="like_connection")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['search'])]
     private ?User $users = null;
 
 
