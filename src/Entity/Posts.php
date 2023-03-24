@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -16,6 +18,7 @@ use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
+
 /** A post
  *
  * @ORM\Entity
@@ -27,7 +30,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Delete(),
     new Patch()
 ])]
-#[ApiFilter(OrderFilter::class, properties: ['likes.id'])]
+
+#[ApiFilter(OrderFilter::class, properties: ['date_create', 'likes.id'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['goal.users' => 'exact'])]
+
 class Posts
 {
 
