@@ -99,7 +99,7 @@ class Posts
      *
      * @ORM\OneToMany(
      *     targetEntity="Comment",
-     *     mappedBy="Comment",
+     *     mappedBy="post",
      *     cascade={"persist", "remove"})
      */
     private iterable $comment;
@@ -140,6 +140,7 @@ class Posts
     {
         $this->text = $text;
     }
+
 
 
     /**

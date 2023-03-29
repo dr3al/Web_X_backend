@@ -50,12 +50,13 @@ class Comment
     private ?Posts $post = null;
 
 
-    /** The comment of the comment
+    /**
+     * The comment that this comment replies to
      *
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="comment")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="replies")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private ?Comment $comment = null;
+    private ?Comment $reply = null;
 
 
     /**
@@ -74,14 +75,12 @@ class Comment
 
 
     /**
-     * @var Comment[] Available comment from this comment
+     * The replies to this comment
      *
-     * @ORM\OneToMany(
-     *     targetEntity="Comment",
-     *     mappedBy="comment",
-     *     cascade={"persist", "remove"})
+     * @var Comment[]
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="reply", cascade={"persist", "remove"})
      */
-    public iterable $comments;
+    private iterable $replies;
 
     /**
      * @return int|null
@@ -110,7 +109,7 @@ class Comment
     /**
      * @return Posts|null
      */
-    public function getPosts(): ?Posts
+    public function getPost(): ?Posts
     {
         return $this->post;
     }
@@ -118,7 +117,7 @@ class Comment
     /**
      * @param Posts|null $post
      */
-    public function setPosts(?Posts $post): void
+    public function setPost(?Posts $post): void
     {
         $this->post = $post;
     }
@@ -126,17 +125,17 @@ class Comment
     /**
      * @return Comment|null
      */
-    public function getComment(): ?Comment
+    public function getReply(): ?Comment
     {
-        return $this->comment;
+        return $this->reply;
     }
 
     /**
-     * @param Comment|null $comment
+     * @param Comment|null $reply
      */
-    public function setComment(?Comment $comment): void
+    public function setReply(?Comment $reply): void
     {
-        $this->comment = $comment;
+        $this->reply = $reply;
     }
 
     /**
@@ -170,6 +169,23 @@ class Comment
     {
         $this->date_modify = $date_modify;
     }
+
+    /**
+     * @return iterable
+     */
+    public function getReplies(): iterable
+    {
+        return $this->replies;
+    }
+
+    /**
+     * @param iterable $replies
+     */
+    public function setReplies(iterable $replies): void
+    {
+        $this->replies = $replies;
+    }
+
 
 }
 
