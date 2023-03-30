@@ -4,9 +4,11 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Services\User\GeneratePasswordService;
+use App\Services\User\SendMailService;
 use App\Services\User\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends AbstractController
@@ -15,6 +17,7 @@ class ResetPasswordController extends AbstractController
         private readonly EntityManagerInterface  $em,
         private readonly UserService             $userService,
         private readonly GeneratePasswordService $generatePasswordService,
+        private readonly SendMailService $mailService
     )
     {}
 
@@ -33,14 +36,10 @@ class ResetPasswordController extends AbstractController
             $this->em->persist($user);
             $this->em->flush(); // отправляем хэшированный пароль в базу
 
-            // Отправка на почту не хэшированного пароля
-            /**
-            if(flush())
-            {
-            $this->send($user->getEmail(),$password);
-            }
-             **/
-            return $user;
+
+            $this->mailService->send($user->getEmail(),$password);
+
+            return new JsonResponse('Пароль успешно изменен');
         }
     }
 }
