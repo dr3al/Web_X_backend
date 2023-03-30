@@ -139,38 +139,6 @@ class Comment
     }
 
     /**
-     * @return mixed
-     */
-    public function getdate_create()
-    {
-        return $this->date_create;
-    }
-
-    /**
-     * @param mixed $date_create
-     */
-    public function setdate_create($date_create): void
-    {
-        $this->date_create = $date_create;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getdate_modify()
-    {
-        return $this->date_modify;
-    }
-
-    /**
-     * @param mixed $date_modify
-     */
-    public function setdate_modify($date_modify): void
-    {
-        $this->date_modify = $date_modify;
-    }
-
-    /**
      * @return iterable
      */
     public function getReplies(): iterable
@@ -179,11 +147,35 @@ class Comment
     }
 
     /**
-     * @param iterable $replies
+     * @return \DateTimeInterface|null
      */
-    public function setReplies(iterable $replies): void
+    public function getDateCreate(): ?\DateTimeInterface
     {
-        $this->replies = $replies;
+        return $this->date_create;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $date_create
+     */
+    public function setDateCreate(?\DateTimeInterface $date_create): void
+    {
+        $this->date_create = $date_create;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getDateModify(): ?\DateTimeInterface
+    {
+        return $this->date_modify;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $date_modify
+     */
+    public function setDateModify(?\DateTimeInterface $date_modify): void
+    {
+        $this->date_modify = $date_modify;
     }
 
 
