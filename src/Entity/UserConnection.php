@@ -1,23 +1,21 @@
 <?php
 
 namespace App\Entity;
+
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Controller\Subscriptions\SubscriberController;
 use App\Controller\Subscriptions\SubscriptionsController;
 use App\Controller\UserConnection\UserConnectionController;
-use App\Controller\Subscriptions\SubscriberController;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\UserConnectionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-/** A UserConnection
- *
- * @ORM\Entity
- */
-
-
+#[ORM\Entity(repositoryClass: UserConnectionRepository::class)]
 #[ApiResource(operations: [
     new Get(),
     new Post(
@@ -29,105 +27,76 @@ use Doctrine\ORM\Mapping as ORM;
     new Post(
         uriTemplate: "/user/getSubscriber",
         controller: SubscriberController::class,
-//        normalizationContext: ['groups' => ['read']],
         denormalizationContext: ['groups' => ['getSubscriber']]
     ),
     new Post(
         uriTemplate: "/user/getSubscription",
         controller: SubscriptionsController::class,
-//        normalizationContext: ['groups' => ['read']],
         denormalizationContext: ['groups' => ['getSubscription']]
     ),
     new GetCollection(),
     new Post(),
     new Delete(),
 ])]
-
 class UserConnection
 {
-    /** The id of the UserConnection
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     #[Groups(['read'])]
-    private int $id;
+    private ?int $id;
 
-    /** The UserConnection of the user
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(inversedBy: 'user_connection')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search', 'getSubscriber'])]
-    private ?User $user = null;
+    private ?User $user;
 
-    /** The UserConnection of the Follower
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="user_connection")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(inversedBy: 'follower')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search', 'getSubscription'])]
-    private ?User $follower = null;
+    private ?User $follower;
 
-    /** The date that the UserConnection was created
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreate;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return User|null
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User|null $User
-     */
-
-    public function setUser(User $user): void
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
+        return $this;
     }
-    /**
-     * @return User|null
-     */
+
     public function getFollower(): ?User
     {
         return $this->follower;
     }
 
-    /**
-     * @param User|null $follower
-     */
-    public function setFollower(User $follower): void
+    public function setFollower(?User $follower): self
     {
         $this->follower = $follower;
 
+        return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getDateCreate(): ?\DateTimeInterface
     {
         return $this->dateCreate;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_create
-     */
-    public function setDateCreate(\DateTimeInterface $dateCreate): void
+    public function setDateCreate(\DateTimeInterface $dateCreate): self
     {
         $this->dateCreate = $dateCreate;
 
+        return $this;
     }
 }

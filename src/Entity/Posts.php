@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -11,18 +11,13 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Repository\PostsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-
-
-/** A post
- *
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: PostsRepository::class)]
 #[ApiResource(operations: [
     new Get(),
     new GetCollection(),
@@ -30,195 +25,109 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Delete(),
     new Patch()
 ])]
-
 #[ApiFilter(OrderFilter::class, properties: ['date_create', 'likes.id'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(SearchFilter::class, properties: ['goal.users' => 'exact'])]
-
 class Posts
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $text;
 
-    /** The id of the post
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+    #[ORM\Column]
+    private ?int $progress;
 
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $date_create;
 
-    /** The text of the post
-     *
-     * @ORM\Column(type="text")
-     */
-    private string $text;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $date_modify = null;
 
+    #[ORM\ManyToOne(targetEntity: Goal::class, inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Goal $goal;
 
-    /** The progress of the post
-     *
-     * @ORM\Column(type="integer")
-     */
-    private int $progress;
-
-
-    /** The goal of the post
-     *
-     * @ORM\ManyToOne(targetEntity="Goal", inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?Goal $goal = null;
-
-    /**
-     *The date that the post was created
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_create;
-
-
-    /**
-     *The date that the post was modified
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_modify;
-
-
-    /**
-     * @var LikeConnection[] Available LikeConnections from this post
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="LikeConnection",
-     *     mappedBy="posts",
-     *     cascade={"persist", "remove"})
-     */
-    private iterable $likes;
-
-    /**
-     * @var int|null
-     */
-
-
+    #[ORM\OneToMany(mappedBy: 'posts', targetEntity: LikeConnection::class, orphanRemoval: true)]
+    private Collection $likes;
 
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
-
-    /**
-     * @return int|null
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-
-
-    /**
-     * @return string
-     */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
-    public function setText(string $text): void
+    public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
     }
-
-
-    /**
-     * @return int
-     */
-    public function getProgress(): int
+    public function getProgress(): ?int
     {
         return $this->progress;
     }
 
-    /**
-     * @param int|null $id
-     */
+    public function setProgress(int $progress): self
+    {
+        $this->progress = $progress;
 
+        return $this;
+    }
 
-
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreate(): ?\DateTimeInterface
+    public function getDateCreate(): ?\DateTimeImmutable
     {
         return $this->date_create;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_create
-     */
-    public function setDateCreate(?\DateTimeInterface $date_create): void
+    public function setDateCreate(\DateTimeImmutable $date_create): self
     {
         $this->date_create = $date_create;
+
+        return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateModify(): ?\DateTimeInterface
+    public function getDateModify(): ?\DateTimeImmutable
     {
         return $this->date_modify;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_modify
-     */
-    public function setDateModify(?\DateTimeInterface $date_modify): void
+    public function setDateModify(?\DateTimeImmutable $date_modify): self
     {
         $this->date_modify = $date_modify;
+
+        return $this;
     }
 
-    /**
-     * @param int $progress
-     */
-    public function setProgress(int $progress): void
-    {
-        $this->progress = $progress;
-    }
-
-    /**
-     * @return Goal|null
-     */
-    public function getGoalId(): ?Goal
+    public function getGoal(): ?Goal
     {
         return $this->goal;
     }
 
-    /**
-     * @param Goal|null $goal
-     */
-    public function setGoalId(?Goal $goal): void
+    public function setGoal(?Goal $goal): self
     {
         $this->goal = $goal;
+
+        return $this;
     }
 
     /**
-     * @return iterable
+     * @return Collection<int, LikeConnection>
      */
-    public function getLikes(): iterable|ArrayCollection
+    public function getLikes(): Collection
     {
         return $this->likes;
     }
-
-
-
-
-
-
-
-
-
 
 }

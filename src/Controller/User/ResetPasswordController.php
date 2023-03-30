@@ -7,6 +7,7 @@ use App\Services\User\GeneratePasswordService;
 use App\Services\User\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends AbstractController
@@ -40,7 +41,7 @@ class ResetPasswordController extends AbstractController
             $this->send($user->getEmail(),$password);
             }
              **/
-            return $user;
+            return new JsonResponse(["message" => "Пароль успешно изменен."], 200);
         }
     }
 }

@@ -6,6 +6,7 @@ use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\User;
 use App\Services\User\UserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RegistrationController
 {
@@ -16,13 +17,26 @@ class RegistrationController
     )
     {}
 
-    public function __invoke (User $user): void
-    {
-        $this->validator->validate($user);
-        $hashedPassword = $this->userService->hashPassword($user, $user->getPassword());
-        $user->setPassword($hashedPassword);
+//    public function __invoke (User $user): void
+//    {
+//        dd($user);
+//        $this->validator->validate($user);
+//        $hashedPassword = $this->userService->hashPassword($user, $user->getPassword());
+//        $user->setPassword($hashedPassword);
+//
+//        $this->entityManager->persist($user);
+//        $this->entityManager->flush();
+//    }
 
-        $this->entityManager->persist($user);
+    public function __invoke (mixed $data): JsonResponse
+    {
+        $this->validator->validate($data);
+        $hashedPassword = $this->userService->hashPassword($data, $data->getPassword());
+        $data->setPassword($hashedPassword);
+
+        $this->entityManager->persist($data);
         $this->entityManager->flush();
+
+        return new JsonResponse(["message" => "Пользователь создан."], 200);
     }
 }
