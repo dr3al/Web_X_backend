@@ -95,10 +95,19 @@ class Posts
     private iterable $likes;
 
     /**
+     * @var Comment[] Available user from this goals
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Comment",
+     *     mappedBy="post",
+     *     cascade={"persist", "remove"})
+     */
+    private iterable $comment;
+
+
+    /**
      * @var int|null
      */
-
-
 
     public function __construct()
     {
@@ -131,6 +140,7 @@ class Posts
     {
         $this->text = $text;
     }
+
 
 
     /**
@@ -212,13 +222,13 @@ class Posts
         return $this->likes;
     }
 
-
-
-
-
-
-
-
+    /**
+     * @return iterable
+     */
+    public function getComment(): iterable
+    {
+        return $this->comment;
+    }
 
 
 }
