@@ -1,24 +1,19 @@
 <?php
 
 namespace App\Entity;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Metadata\ApiFilter;
+
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\LikeConnection\LikeConnectionController;
-use App\Controller\UserConnection\UserConnectionController;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\LikeConnectionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
-/** A likeconnection
- *
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: LikeConnectionRepository::class)]
 #[ApiResource(operations: [
     new Get(),
     new Post(
@@ -31,108 +26,66 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(),
     new Delete(),
 ])]
-
 class LikeConnection
 {
-    /** The id of the LikeConnection
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     #[Groups(['read'])]
-    private int $id;
+    private ?int $id;
 
 
-    /** The LikeConnection of the post
-     *
-     * @ORM\ManyToOne(targetEntity="Posts", inversedBy="like_connection")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $date_create;
+
+    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search'])]
-    private ?Posts $posts = null;
+    private ?User $users;
 
-
-    /** The LikeConnection of the user
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="like_connection")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search'])]
-    private ?User $users = null;
+    private ?Posts $posts;
 
-
-
-    /**
-     *The date that the LikeConnection was created
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_create;
-
-
-
-
-    /**
-     * @return int|null
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-
-    /**
-     * @return Posts|null
-     */
-    public function getPosts(): ?Posts
+    public function getDateCreate(): ?\DateTimeImmutable
     {
-        return $this->posts;
+        return $this->date_create;
     }
 
-
-    /**
-     * @param Posts|null $posts
-     */
-    public function setPosts(?Posts $posts): void
+    public function setDateCreate(\DateTimeImmutable $date_create): self
     {
-        $this->posts = $posts;
+        $this->date_create = $date_create;
+
+        return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getUsers(): ?User
     {
         return $this->users;
     }
 
-    /**
-     * @param User|null $users
-     */
-    public function setUsers(?User $users): void
+    public function setUsers(?User $users): self
     {
         $this->users = $users;
+
+        return $this;
     }
 
-
-
-
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreate(): ?\DateTimeInterface
+    public function getPosts(): ?Posts
     {
-        return $this->date_create;
+        return $this->posts;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_create
-     */
-    public function setDateCreate(?\DateTimeInterface $date_create): void
+    public function setPosts(?Posts $posts): self
     {
-        $this->date_create = $date_create;
-    }
+        $this->posts = $posts;
 
+        return $this;
+    }
 }

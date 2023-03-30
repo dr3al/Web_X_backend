@@ -10,16 +10,16 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationController;
 use App\Controller\User\ResetPasswordController;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Doctrine\ORM\Mapping as ORM;
 
-/** A user
- *
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
     new Get(),
     new GetCollection(),
@@ -36,264 +36,195 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /** The id of the user
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id;
 
-    /** The username of the user
-     *
-     * @ORM\Column(type="string", length=40, options={"fixed" = false}, unique=true)
-     */
-    private string $username;
+    #[ORM\Column(length: 40)]
+    private ?string $username;
 
-    /** The password of the user
-     *
-     * @ORM\Column(type="string")
-     */
-    private string $password;
+    #[ORM\Column(length: 255)]
+    private ?string $password;
 
-    /** The email of the user
-     *
-     * @ORM\Column(type="string", length=40, options={"fixed" = false}, unique=true)
-     */
+    #[ORM\Column(length: 40)]
     #[Groups(['email'])]
-    private string $email;
+    private ?string $email;
 
-    /** The first_name of the user
-     *
-     * @ORM\Column(type="string", length=20, options={"fixed" = false})
-     */
-    private string $first_name;
+    #[ORM\Column(length: 20)]
+    private ?string $first_name;
 
-    /** The last_name of the user
-     *
-     * @ORM\Column(type="string", length=20, options={"fixed" = false})
-     */
-    private string $last_name;
+    #[ORM\Column(length: 20)]
+    private ?string $last_name;
 
-    /** The roles of the user
-     *
-     * @ORM\Column(type="array")
-     */
-    private array $roles;
+    #[ORM\Column(type: Types::ARRAY)]
 
-    /**
-     *The date that the user was created
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_create;
+    private array $roles = [];
 
-    /**
-     *The date that the user was modified
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_modify;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $date_create;
 
-    /**
-     * @var Goal[] Available user from this goals
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Goal",
-     *     mappedBy="users",
-     *     cascade={"persist", "remove"})
-     */
-    private iterable $goals;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $date_modify = null;
 
-    /**
-     * @var LikeConnection[] Available user from this likeConnections
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="LikeConnection",
-     *     mappedBy="users",
-     *     cascade={"persist", "remove"})
-     */
-    private iterable $likes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserConnection::class, orphanRemoval: true)]
+    private Collection $user;
 
-    /**
-     * @var UserConnection[] Available user from this likeConnections
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="UserConnection",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"})
-     */
-    private iterable $user;
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: UserConnection::class, orphanRemoval: true)]
+    private Collection $follower;
 
-    /**
-     * @var UserConnection[] Available user from this likeConnections
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="UserConnection",
-     *     mappedBy="follower",
-     *     cascade={"persist", "remove"})
-     */
-    private iterable $follower;
+    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Goal::class, orphanRemoval: true)]
+    private Collection $goal;
+
+    #[ORM\OneToMany(mappedBy: 'users', targetEntity: LikeConnection::class, orphanRemoval: true)]
+    private Collection $likes;
 
     public function __construct()
     {
-        $this->likes = new ArrayCollection();
-        $this->goals = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->follower = new ArrayCollection();
+        $this->goal = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword(): string
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail(): string
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName(): string
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName(): string
+    public function setFirstName(string $first_name): self
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreate(): ?\DateTimeInterface
-    {
-        return $this->date_create;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateModify(): ?\DateTimeInterface
-    {
-        return $this->date_modify;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @param string $first_name
-     */
-    public function setFirstName(string $first_name): void
-    {
-        $this->first_name = $first_name;
-    }
-
-    /**
-     * @param string $last_name
-     */
-    public function setLastName(string $last_name): void
+    public function setLastName(string $last_name): self
     {
         $this->last_name = $last_name;
-    }
 
-    /**
-     * @param array $roles
-     */
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $date_create
-     */
-    public function setDateCreate(?\DateTimeInterface $date_create): void
-    {
-        $this->date_create = $date_create;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $date_modify
-     */
-    public function setDateModify(?\DateTimeInterface $date_modify): void
-    {
-        $this->date_modify = $date_modify;
-    }
-
-    /**
-     * @return iterable
-     */
-    public function getGoals(): iterable|ArrayCollection
-    {
-        return $this->goals;
-    }
-
-    /**
-     * @return iterable
-     */
-    public function getLikes(): iterable|ArrayCollection
-    {
-        return $this->likes;
+        return $this;
     }
 
     public function getRoles(): array
     {
         return $this->roles;
     }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getDateCreate(): ?\DateTimeImmutable
+    {
+        return $this->date_create;
+    }
+
+    public function setDateCreate(\DateTimeImmutable $date_create): self
+    {
+        $this->date_create = $date_create;
+
+        return $this;
+    }
+
+    public function getDateModify(): ?\DateTimeImmutable
+    {
+        return $this->date_modify;
+    }
+
+    public function setDateModify(?\DateTimeImmutable $date_modify): self
+    {
+        $this->date_modify = $date_modify;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserConnection>
+     */
+    public function getUserConnection(): Collection
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * @return Collection<int, UserConnection>
+     */
+    public function getFollower(): Collection
+    {
+        return $this->follower;
+    }
+
+
+    /**
+     * @return Collection<int, Goal>
+     */
+    public function getGoal(): Collection
+    {
+        return $this->goal;
+    }
+
+
+    /**
+     * @return Collection<int, LikeConnection>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
 
     public function eraseCredentials()
     {}

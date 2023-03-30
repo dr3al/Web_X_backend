@@ -36,7 +36,6 @@ class ResetPasswordController extends AbstractController
             $this->em->persist($user);
             $this->em->flush(); // отправляем хэшированный пароль в базу
 
-
             $this->mailService->send($user->getEmail(),$password);
 
             return new JsonResponse('Пароль успешно изменен');
