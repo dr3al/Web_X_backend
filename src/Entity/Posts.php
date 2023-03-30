@@ -53,6 +53,9 @@ class Posts
     #[ORM\OneToMany(mappedBy: 'posts', targetEntity: LikeConnection::class, orphanRemoval: true)]
     private Collection $likes;
 
+    #[ORM\OneToMany(mappedBy: 'posts', targetEntity: Comment::class, orphanRemoval: true)]
+    private iterable $comment;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -68,22 +71,19 @@ class Posts
         return $this->text;
     }
 
-    public function setText(string $text): self
+    public function setText(?string $text): void
     {
         $this->text = $text;
-
-        return $this;
     }
+
     public function getProgress(): ?int
     {
         return $this->progress;
     }
 
-    public function setProgress(int $progress): self
+    public function setProgress(?int $progress): void
     {
         $this->progress = $progress;
-
-        return $this;
     }
 
     public function getDateCreate(): ?\DateTimeImmutable
@@ -91,11 +91,9 @@ class Posts
         return $this->date_create;
     }
 
-    public function setDateCreate(\DateTimeImmutable $date_create): self
+    public function setDateCreate(?\DateTimeImmutable $date_create): void
     {
         $this->date_create = $date_create;
-
-        return $this;
     }
 
     public function getDateModify(): ?\DateTimeImmutable
@@ -103,11 +101,9 @@ class Posts
         return $this->date_modify;
     }
 
-    public function setDateModify(?\DateTimeImmutable $date_modify): self
+    public function setDateModify(?\DateTimeImmutable $date_modify): void
     {
         $this->date_modify = $date_modify;
-
-        return $this;
     }
 
     public function getGoal(): ?Goal
@@ -115,19 +111,28 @@ class Posts
         return $this->goal;
     }
 
-    public function setGoal(?Goal $goal): self
+    public function setGoal(?Goal $goal): void
     {
         $this->goal = $goal;
-
-        return $this;
     }
-
-    /**
-     * @return Collection<int, LikeConnection>
-     */
+    
     public function getLikes(): Collection
     {
         return $this->likes;
     }
 
+    public function setLikes(Collection $likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    public function getComment(): iterable
+    {
+        return $this->comment;
+    }
+    
+    public function setComment(iterable $comment): void
+    {
+        $this->comment = $comment;
+    }
 }
