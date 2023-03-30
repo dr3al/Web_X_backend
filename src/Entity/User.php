@@ -198,27 +198,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->user;
     }
 
-//    public function addUserConnection(UserConnection $userConnection): self
-//    {
-//        if (!$this->user->contains($userConnection)) {
-//            $this->user->add($userConnection);
-//            $userConnection->setUser($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeUserConnection(UserConnection $userConnection): self
-//    {
-//        if ($this->user->removeElement($userConnection)) {
-//            // set the owning side to null (unless already changed)
-//            if ($userConnection->getUser() === $this) {
-//                $userConnection->setUser(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
     /**
      * @return Collection<int, UserConnection>
@@ -228,27 +207,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->follower;
     }
 
-//    public function addFollower(UserConnection $follower): self
-//    {
-//        if (!$this->follower->contains($follower)) {
-//            $this->follower->add($follower);
-//            $follower->setFollower($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeFollower(UserConnection $follower): self
-//    {
-//        if ($this->follower->removeElement($follower)) {
-//            // set the owning side to null (unless already changed)
-//            if ($follower->getFollower() === $this) {
-//                $follower->setFollower(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
     /**
      * @return Collection<int, Goal>
@@ -258,27 +216,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->goal;
     }
 
-//    public function addGoal(Goal $goal): self
-//    {
-//        if (!$this->goal->contains($goal)) {
-//            $this->goal->add($goal);
-//            $goal->setUsers($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeGoal(Goal $goal): self
-//    {
-//        if ($this->goal->removeElement($goal)) {
-//            // set the owning side to null (unless already changed)
-//            if ($goal->getUsers() === $this) {
-//                $goal->setUsers(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
     /**
      * @return Collection<int, LikeConnection>
@@ -288,27 +225,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->likes;
     }
 
-//    public function addLike(LikeConnection $like): self
-//    {
-//        if (!$this->likes->contains($like)) {
-//            $this->likes->add($like);
-//            $like->setUsers($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeLike(LikeConnection $like): self
-//    {
-//        if ($this->likes->removeElement($like)) {
-//            // set the owning side to null (unless already changed)
-//            if ($like->getUsers() === $this) {
-//                $like->setUsers(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
     public function eraseCredentials()
     {}

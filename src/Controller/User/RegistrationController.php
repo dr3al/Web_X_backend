@@ -17,16 +17,6 @@ class RegistrationController
     )
     {}
 
-//    public function __invoke (User $user): void
-//    {
-//        dd($user);
-//        $this->validator->validate($user);
-//        $hashedPassword = $this->userService->hashPassword($user, $user->getPassword());
-//        $user->setPassword($hashedPassword);
-//
-//        $this->entityManager->persist($user);
-//        $this->entityManager->flush();
-//    }
 
     public function __invoke (mixed $data): JsonResponse
     {

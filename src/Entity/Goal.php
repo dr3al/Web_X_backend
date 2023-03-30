@@ -137,25 +137,4 @@ class Goal
         return $this->posts;
     }
 
-//    public function addPost(Posts $post): self
-//    {
-//        if (!$this->posts->contains($post)) {
-//            $this->posts->add($post);
-//            $post->setGoal($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removePost(Posts $post): self
-//    {
-//        if ($this->posts->removeElement($post)) {
-//            // set the owning side to null (unless already changed)
-//            if ($post->getGoal() === $this) {
-//                $post->setGoal(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 }
