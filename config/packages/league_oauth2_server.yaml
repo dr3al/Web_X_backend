@@ -6,8 +6,8 @@ league_oauth2_server:
     resource_server:
         public_key: '%env(resolve:OAUTH_PUBLIC_KEY)%'
     scopes:
-        available: ['email']
-        default: ['email']
+        available: ['ROLE_USER']
+        default: ['ROLE_USER']
     persistence:
         doctrine: null
 

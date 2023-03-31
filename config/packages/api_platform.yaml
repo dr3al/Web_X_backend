@@ -5,3 +5,27 @@ api_platform:
     json: ['application/merge-patch+json']
   swagger:
     versions: [3]
+  oauth:
+    # To enable or disable OAuth.
+    enabled: true
+
+    # The OAuth client ID.
+    clientId: 'dd1f494713fa283455cdb8b97538bcda'
+
+    # The OAuth client secret.
+    clientSecret: 'b8e5b5b75c54325613ddcde4b557ac0272c5e2a0ea9b7aa80355ba1bbc8d9492a243d393576109b791da62a74611a3b6c67c2cdd61f5205c8b369c6499815603'
+
+    # The OAuth type.
+    type: 'oauth2'
+
+    # The OAuth flow grant type.
+    flow: 'password'
+
+    # The OAuth token url.
+    tokenUrl: '/token'
+
+    # The OAuth authentication url.
+    authorizationUrl: '/oauth/v2/auth'
+
+    # The OAuth scopes.
+    scopes: [ ]

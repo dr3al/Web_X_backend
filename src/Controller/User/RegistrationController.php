@@ -18,10 +18,11 @@ class RegistrationController
     {}
 
 
-    public function __invoke (mixed $data): JsonResponse
+    public function __invoke (User $data): JsonResponse
     {
         $this->validator->validate($data);
         $hashedPassword = $this->userService->hashPassword($data, $data->getPassword());
+        $data->setRoles(['ROLE_USER']);
         $data->setPassword($hashedPassword);
 
         $this->entityManager->persist($data);
