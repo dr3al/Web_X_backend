@@ -30,7 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
         denormalizationContext: ['groups'=>['email']]),
     new Post(
         uriTemplate: "/user/register",
-        controller: RegistrationController::class),
+        controller: RegistrationController::class,
+        denormalizationContext: ['groups'=>['register']]),
     new Delete(),
     new Patch()
 ])]
@@ -43,19 +44,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id;
 
     #[ORM\Column(length: 40)]
+    #[Groups(['register'])]
     private ?string $username;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['register'])]
     private ?string $password;
 
     #[ORM\Column(length: 40)]
-    #[Groups(['email'])]
+    #[Groups(['email', 'register'])]
     private ?string $email;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['register'])]
     private ?string $firstName;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['register'])]
     private ?string $lastName;
 
     #[ORM\Column(type: Types::ARRAY)]
@@ -74,9 +79,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $likes;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    #[Groups(['register'])]
     private ?\DateTimeImmutable $dateCreate;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    #[Groups(['register'])]
     private ?\DateTimeImmutable $dateModify = null;
 
     public function __construct()

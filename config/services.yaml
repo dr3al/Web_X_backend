@@ -36,5 +36,6 @@ services:
     App\Services\User\SendMailService:
         autowire: true
 
-
-
+    App\EventListener\UserResolveListener:
+        tags:
+            - { name: kernel.event_listener, event: league.oauth2_server.event.user_resolve, method: onUserResolve }
