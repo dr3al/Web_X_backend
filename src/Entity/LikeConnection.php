@@ -10,8 +10,8 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\LikeConnection\LikeConnectionController;
 use App\Repository\LikeConnectionRepository;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikeConnectionRepository::class)]
 #[ApiResource(operations: [
@@ -20,12 +20,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: "/like/find",
         controller: LikeConnectionController::class,
         normalizationContext: ['groups' => ['read']],
-        denormalizationContext: ['groups' => ['search']]
-    ),
+        denormalizationContext: ['groups' => ['search']]),
     new GetCollection(),
     new Post(),
     new Delete(),
 ])]
+
 class LikeConnection
 {
     #[ORM\Id]
@@ -34,35 +34,22 @@ class LikeConnection
     #[Groups(['read'])]
     private ?int $id;
 
-
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private ?\DateTimeImmutable $date_create;
-
-    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'likes')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search'])]
     private ?User $users;
 
-    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\ManyToOne(targetEntity: Posts::class, inversedBy: 'likes')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search'])]
     private ?Posts $posts;
 
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateCreate;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDateCreate(): ?\DateTimeImmutable
-    {
-        return $this->date_create;
-    }
-
-    public function setDateCreate(\DateTimeImmutable $date_create): self
-    {
-        $this->date_create = $date_create;
-
-        return $this;
     }
 
     public function getUsers(): ?User
@@ -70,11 +57,9 @@ class LikeConnection
         return $this->users;
     }
 
-    public function setUsers(?User $users): self
+    public function setUsers(?User $users): void
     {
         $this->users = $users;
-
-        return $this;
     }
 
     public function getPosts(): ?Posts
@@ -82,10 +67,18 @@ class LikeConnection
         return $this->posts;
     }
 
-    public function setPosts(?Posts $posts): self
+    public function setPosts(?Posts $posts): void
     {
         $this->posts = $posts;
+    }
 
-        return $this;
+    public function getDateCreate(): ?\DateTimeImmutable
+    {
+        return $this->dateCreate;
+    }
+
+    public function setDateCreate(\DateTimeImmutable $dateCreate): void
+    {
+        $this->dateCreate = $dateCreate;
     }
 }

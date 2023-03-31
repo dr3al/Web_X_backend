@@ -8,14 +8,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-
-/** A Comment
- *
- * @ORM\Entity
- */
+#[ORM\Entity()]
 #[ApiResource(operations: [
     new Get(),
     new GetCollection(),
@@ -25,160 +22,93 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Comment
 {
-    /** The id of the Comment
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private int $id;
 
-    /** The text of the comment
-     *
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: Types::TEXT)]
     private string $text;
 
+    #[ORM\ManyToOne(targetEntity:Posts::class, inversedBy: 'comment')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Posts $posts = null;
 
-    /** The comment of the post
-     *
-     * @ORM\ManyToOne(targetEntity="Posts", inversedBy="comment")
-     * @ORM\JoinColumn(nullable=false)
-     */
-
-    private ?Posts $post = null;
-
-
-    /**
-     * The comment that this comment replies to
-     *
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="replies")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'replies')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Comment $reply = null;
 
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'reply', orphanRemoval: true)]
+    private Collection $replies;
 
-    /**
-     *The date that the comment was created
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_create;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateCreate;
 
-    /**
-     *The date that the comment was modified
-     *
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $date_modify;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $dateModify;
 
+    public function __construct()
+    {
+        $this->replies = new ArrayCollection();
+    }
 
-    /**
-     * The replies to this comment
-     *
-     * @var Comment[]
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="reply", cascade={"persist", "remove"})
-     */
-    private iterable $replies;
-
-    /**
-     * @return int|null
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
     public function setText(string $text): void
     {
         $this->text = $text;
     }
 
-    /**
-     * @return Posts|null
-     */
     public function getPost(): ?Posts
     {
-        return $this->post;
+        return $this->posts;
     }
 
-    /**
-     * @param Posts|null $post
-     */
-    public function setPost(?Posts $post): void
+    public function setPost(?Posts $posts): void
     {
-        $this->post = $post;
+        $this->posts = $posts;
     }
 
-    /**
-     * @return Comment|null
-     */
     public function getReply(): ?Comment
     {
         return $this->reply;
     }
 
-    /**
-     * @param Comment|null $reply
-     */
     public function setReply(?Comment $reply): void
     {
         $this->reply = $reply;
     }
 
-    /**
-     * @return iterable
-     */
     public function getReplies(): iterable
     {
         return $this->replies;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateCreate(): ?\DateTimeInterface
+    public function getDateCreate()
     {
-        return $this->date_create;
+        return $this->dateCreate;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_create
-     */
-    public function setDateCreate(?\DateTimeInterface $date_create): void
+    public function setDateCreate($dateCreate): void
     {
-        $this->date_create = $date_create;
+        $this->dateCreate = $dateCreate;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDateModify(): ?\DateTimeInterface
+    public function getDateModify()
     {
-        return $this->date_modify;
+        return $this->dateModify;
     }
 
-    /**
-     * @param \DateTimeInterface|null $date_modify
-     */
-    public function setDateModify(?\DateTimeInterface $date_modify): void
+    public function setDateModify($dateModify): void
     {
-        $this->date_modify = $date_modify;
+        $this->dateModify = $dateModify;
     }
-
-
 }
-
-

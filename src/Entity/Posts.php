@@ -25,8 +25,10 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
+
 #[ApiFilter(OrderFilter::class, properties: ['date_create', 'likes.id'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(SearchFilter::class, properties: ['goal.users' => 'exact'])]
+
 class Posts
 {
     #[ORM\Id]
@@ -40,25 +42,26 @@ class Posts
     #[ORM\Column]
     private ?int $progress;
 
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private ?\DateTimeImmutable $date_create;
-
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $date_modify = null;
-
     #[ORM\ManyToOne(targetEntity: Goal::class, inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Goal $goal;
 
-    #[ORM\OneToMany(mappedBy: 'posts', targetEntity: LikeConnection::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: LikeConnection::class, mappedBy: 'posts', orphanRemoval: true)]
     private Collection $likes;
 
-    #[ORM\OneToMany(mappedBy: 'posts', targetEntity: Comment::class, orphanRemoval: true)]
-    private iterable $comment;
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'posts', orphanRemoval: true)]
+    private Collection $comment;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateCreate;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $dateModify = null;
 
     public function __construct()
     {
         $this->likes = new ArrayCollection();
+        $this->comment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,26 +89,6 @@ class Posts
         $this->progress = $progress;
     }
 
-    public function getDateCreate(): ?\DateTimeImmutable
-    {
-        return $this->date_create;
-    }
-
-    public function setDateCreate(?\DateTimeImmutable $date_create): void
-    {
-        $this->date_create = $date_create;
-    }
-
-    public function getDateModify(): ?\DateTimeImmutable
-    {
-        return $this->date_modify;
-    }
-
-    public function setDateModify(?\DateTimeImmutable $date_modify): void
-    {
-        $this->date_modify = $date_modify;
-    }
-
     public function getGoal(): ?Goal
     {
         return $this->goal;
@@ -115,24 +98,34 @@ class Posts
     {
         $this->goal = $goal;
     }
-    
+
     public function getLikes(): Collection
     {
         return $this->likes;
-    }
-
-    public function setLikes(Collection $likes): void
-    {
-        $this->likes = $likes;
     }
 
     public function getComment(): iterable
     {
         return $this->comment;
     }
-    
-    public function setComment(iterable $comment): void
+
+    public function getDateCreate(): ?\DateTimeImmutable
     {
-        $this->comment = $comment;
+        return $this->dateCreate;
+    }
+
+    public function setDateCreate(?\DateTimeImmutable $dateCreate): void
+    {
+        $this->dateCreate = $dateCreate;
+    }
+
+    public function getDateModify(): ?\DateTimeImmutable
+    {
+        return $this->dateModify;
+    }
+
+    public function setDateModify(?\DateTimeImmutable $dateModify): void
+    {
+        $this->dateModify = $dateModify;
     }
 }

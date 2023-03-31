@@ -25,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
     new Delete(),
     new Patch()
 ])]
+
 #[ApiFilter(
     SearchFilter:: class,
     properties:[
@@ -33,6 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
         'users' => SearchFilterInterface::STRATEGY_EXACT
     ]
 )]
+
 class Goal
 {
     #[ORM\Id]
@@ -46,18 +48,18 @@ class Goal
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description;
 
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private ?\DateTimeImmutable $date_create;
-
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $date_modify = null;
-
-    #[ORM\ManyToOne(inversedBy: 'goal')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'goal')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $users = null;
 
-    #[ORM\OneToMany(mappedBy: 'goal', targetEntity: Posts::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Posts::class, mappedBy: 'goal', orphanRemoval: true)]
     private Collection $posts;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateCreate;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $dateModify = null;
 
     public function __construct()
     {
@@ -74,11 +76,9 @@ class Goal
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -86,35 +86,9 @@ class Goal
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): void
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getDateCreate(): ?\DateTimeImmutable
-    {
-        return $this->date_create;
-    }
-
-    public function setDateCreate(\DateTimeImmutable $date_create): self
-    {
-        $this->date_create = $date_create;
-
-        return $this;
-    }
-
-    public function getDateModify(): ?\DateTimeImmutable
-    {
-        return $this->date_modify;
-    }
-
-    public function setDateModify(?\DateTimeImmutable $date_modify): self
-    {
-        $this->date_modify = $date_modify;
-
-        return $this;
     }
 
     public function getUsers(): ?User
@@ -122,19 +96,33 @@ class Goal
         return $this->users;
     }
 
-    public function setUsers(?User $users): self
+    public function setUsers(?User $users): void
     {
         $this->users = $users;
-
-        return $this;
     }
 
-    /**
-     * @return Collection<int, Posts>
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
     }
 
+    public function getDateCreate(): ?\DateTimeImmutable
+    {
+        return $this->dateCreate;
+    }
+
+    public function setDateCreate(?\DateTimeImmutable $dateCreate): void
+    {
+        $this->dateCreate = $dateCreate;
+    }
+
+    public function getDateModify(): ?\DateTimeImmutable
+    {
+        return $this->dateModify;
+    }
+
+    public function setDateModify(?\DateTimeImmutable $dateModify): void
+    {
+        $this->dateModify = $dateModify;
+    }
 }

@@ -38,5 +38,4 @@ class PostsRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
 }

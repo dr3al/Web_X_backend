@@ -12,8 +12,8 @@ use App\Controller\Subscriptions\SubscriptionsController;
 use App\Controller\UserConnection\UserConnectionController;
 use App\Repository\UserConnectionRepository;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserConnectionRepository::class)]
 #[ApiResource(operations: [
@@ -22,22 +22,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: "/user/find",
         controller: UserConnectionController::class,
         normalizationContext: ['groups' => ['read']],
-        denormalizationContext: ['groups' => ['search']]
-    ),
+        denormalizationContext: ['groups' => ['search']]),
     new Post(
         uriTemplate: "/user/getSubscriber",
         controller: SubscriberController::class,
-        denormalizationContext: ['groups' => ['getSubscriber']]
-    ),
+        denormalizationContext: ['groups' => ['getSubscriber']]),
     new Post(
         uriTemplate: "/user/getSubscription",
         controller: SubscriptionsController::class,
-        denormalizationContext: ['groups' => ['getSubscription']]
-    ),
+        denormalizationContext: ['groups' => ['getSubscription']]),
     new GetCollection(),
     new Post(),
     new Delete(),
 ])]
+
 class UserConnection
 {
     #[ORM\Id]
@@ -46,12 +44,12 @@ class UserConnection
     #[Groups(['read'])]
     private ?int $id;
 
-    #[ORM\ManyToOne(inversedBy: 'user_connection')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'user')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search', 'getSubscriber'])]
     private ?User $user;
 
-    #[ORM\ManyToOne(inversedBy: 'follower')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'follower')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['search', 'getSubscription'])]
     private ?User $follower;
@@ -69,11 +67,9 @@ class UserConnection
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?User $user): void
     {
         $this->user = $user;
-
-        return $this;
     }
 
     public function getFollower(): ?User
@@ -81,11 +77,9 @@ class UserConnection
         return $this->follower;
     }
 
-    public function setFollower(?User $follower): self
+    public function setFollower(?User $follower): void
     {
         $this->follower = $follower;
-
-        return $this;
     }
 
     public function getDateCreate(): ?\DateTimeInterface
@@ -93,10 +87,8 @@ class UserConnection
         return $this->dateCreate;
     }
 
-    public function setDateCreate(\DateTimeInterface $dateCreate): self
+    public function setDateCreate(\DateTimeInterface $dateCreate): void
     {
         $this->dateCreate = $dateCreate;
-
-        return $this;
     }
 }

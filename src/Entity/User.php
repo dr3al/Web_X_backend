@@ -14,10 +14,10 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
@@ -27,15 +27,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: "/user/reset",
         controller: ResetPasswordController::class,
         normalizationContext: ['groups'=>['email']],
-        denormalizationContext: ['groups'=>['email']]
-    ),
+        denormalizationContext: ['groups'=>['email']]),
     new Post(
         uriTemplate: "/user/register",
-        controller: RegistrationController::class
-    ),
+        controller: RegistrationController::class),
     new Delete(),
     new Patch()
 ])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -54,32 +53,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email;
 
     #[ORM\Column(length: 20)]
-    private ?string $first_name;
+    private ?string $firstName;
 
     #[ORM\Column(length: 20)]
-    private ?string $last_name;
+    private ?string $lastName;
 
     #[ORM\Column(type: Types::ARRAY)]
-
     private array $roles = [];
 
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private ?\DateTimeImmutable $date_create;
-
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $date_modify = null;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserConnection::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserConnection::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $user;
 
-    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: UserConnection::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserConnection::class, mappedBy: 'follower', orphanRemoval: true)]
     private Collection $follower;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Goal::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Goal::class, mappedBy: 'users', orphanRemoval: true)]
     private Collection $goal;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: LikeConnection::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: LikeConnection::class, mappedBy: 'users', orphanRemoval: true)]
     private Collection $likes;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateCreate;
+
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $dateModify = null;
 
     public function __construct()
     {
@@ -99,11 +97,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
     public function getPassword(): ?string
@@ -111,11 +107,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -123,35 +117,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setFirstName(string $firstName): void
     {
-        $this->first_name = $first_name;
-
-        return $this;
+        $this->firstName = $firstName;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): self
+    public function setLastName(string $lastName): void
     {
-        $this->last_name = $last_name;
-
-        return $this;
+        $this->lastName = $lastName;
     }
 
     public function getRoles(): array
@@ -159,72 +147,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
-
-        return $this;
     }
 
-    public function getDateCreate(): ?\DateTimeImmutable
-    {
-        return $this->date_create;
-    }
-
-    public function setDateCreate(\DateTimeImmutable $date_create): self
-    {
-        $this->date_create = $date_create;
-
-        return $this;
-    }
-
-    public function getDateModify(): ?\DateTimeImmutable
-    {
-        return $this->date_modify;
-    }
-
-    public function setDateModify(?\DateTimeImmutable $date_modify): self
-    {
-        $this->date_modify = $date_modify;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, UserConnection>
-     */
     public function getUserConnection(): Collection
     {
         return $this->user;
     }
 
-
-    /**
-     * @return Collection<int, UserConnection>
-     */
     public function getFollower(): Collection
     {
         return $this->follower;
     }
 
-
-    /**
-     * @return Collection<int, Goal>
-     */
     public function getGoal(): Collection
     {
         return $this->goal;
     }
 
-
-    /**
-     * @return Collection<int, LikeConnection>
-     */
     public function getLikes(): Collection
     {
         return $this->likes;
     }
 
+    public function getDateCreate(): ?\DateTimeImmutable
+    {
+        return $this->dateCreate;
+    }
+
+    public function setDateCreate(\DateTimeImmutable $dateCreate): void
+    {
+        $this->dateCreate = $dateCreate;
+    }
+
+    public function getDateModify(): ?\DateTimeImmutable
+    {
+        return $this->dateModify;
+    }
+
+    public function setDateModify(?\DateTimeImmutable $dateModify): void
+    {
+        $this->dateModify = $dateModify;
+    }
 
     public function eraseCredentials()
     {}
