@@ -1,0 +1,15 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+.idea
+/.env
+###> league/oauth2-server-bundle ###
+/config/jwt/*.pem
+###< league/oauth2-server-bundle ###
